@@ -1,0 +1,24 @@
+{
+  "name": "mye-apis",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "",
+  "engines": {
+    "node": "20.12.2"
+  },
+  "scripts": {
+    "start": "tsx ./src/server.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@trpc/server": "^10.45.2",
+    "fastify": "^4.26.2",
+    "tsx": "^4.9.3",
+    "zod": "^3.23.6"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.10"
+  }
+}
