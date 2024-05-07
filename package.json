@@ -3,6 +3,7 @@
   "type": "module",
   "version": "1.0.0",
   "description": "",
+  "main": "export.js",
   "engines": {
     "node": "20.12.2"
   },
