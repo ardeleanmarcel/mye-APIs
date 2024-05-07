@@ -8,9 +8,10 @@
     "experimentalDecorators": true,
     "resolveJsonModule": true,
     "strictNullChecks": true,
-    "declaration": false,
+    "declaration": true,
     "outDir": "dist/",
+    "emitDeclarationOnly": true,
     "lib": ["es7", "dom"]
   },
-  "include": ["src/"]
+  "include": ["src/export.ts"]
 }
