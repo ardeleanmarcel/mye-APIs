@@ -9,7 +9,7 @@
     "resolveJsonModule": true,
     "strictNullChecks": true,
     "declaration": true,
-    "outDir": "dist/",
+    "outDir": "typedefs/",
     "emitDeclarationOnly": true,
     "lib": ["es7", "dom"]
   },

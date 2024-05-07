@@ -3,7 +3,11 @@
   "type": "module",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/export.js",
+  "main": "typedefs/export.js",
+  "files": [
+    "typedefs/"
+  ],
+  "types": "typedefs/export.d.ts",
   "engines": {
     "node": "20.12.2"
   },
