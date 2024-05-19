@@ -79,11 +79,7 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
         _input_out: string;
         _output_in: typeof import("@trpc/server").unsetMarker;
         _output_out: typeof import("@trpc/server").unsetMarker;
-    }, {
-        id: string;
-        name: string;
-        bio?: string | undefined;
-    }>;
+    }, string>;
     createUser: import("@trpc/server").BuildProcedure<"mutation", {
         _config: import("@trpc/server").RootConfig<{
             ctx: object;
@@ -94,19 +90,19 @@ export declare const appRouter: import("@trpc/server").CreateRouterInner<import(
         _meta: object;
         _ctx_out: object;
         _input_in: {
-            name: string;
-            bio?: string | undefined;
+            username: string;
+            password: string;
         };
         _input_out: {
-            name: string;
-            bio?: string | undefined;
+            username: string;
+            password: string;
         };
         _output_in: typeof import("@trpc/server").unsetMarker;
         _output_out: typeof import("@trpc/server").unsetMarker;
-    }, {
-        id: string;
-        name: string;
-        bio?: string | undefined;
-    }>;
+    }, Pick<{
+        username: string;
+        user_id: string;
+        password: string;
+    }, "username" | "user_id">>;
 }>;
 export type AppRouter = typeof appRouter;
