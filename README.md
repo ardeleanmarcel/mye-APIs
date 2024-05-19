@@ -2,4 +2,4 @@
 
 ## Local Development
 
-- Start server with ...
+- Start development server with `npm run dev`
