@@ -3,42 +3,22 @@ import { z } from 'zod';
 import { hash } from 'bcrypt';
 
 import { DEFAULT_SALT_ROUNDS } from './constants/auth.const';
-
-const userDataSchema = z.object({
-  username: z.string().min(3).max(20),
-  password: z.string().min(8).max(20),
-});
-
-const userSchema = userDataSchema.merge(
-  z.object({
-    id: z.string(),
-  })
-);
-
-type UserType = z.infer<typeof userSchema>;
-
-const users: Record<string, UserType> = {};
+import { userCreateSchema } from './models/user.models';
+import { createUsers } from './db/sql/users.sql';
 
 export const t = initTRPC.create();
 
 export const appRouter = t.router({
   getUserById: t.procedure.input(z.string()).query((opts) => {
-    return users[opts.input]; // input type is string
+    return 'gigel';
   }),
 
-  createUser: t.procedure.input(userDataSchema).mutation(async (opts) => {
-    const id = Date.now().toString();
-
+  createUser: t.procedure.input(userCreateSchema).mutation(async (opts) => {
     const { username, password } = opts.input;
 
-    console.log('username', username);
-    console.log('password', password);
-
     const hashedPassword = await hash(password, DEFAULT_SALT_ROUNDS);
-    console.log('hashedPassword', hashedPassword);
 
-    const user: UserType = { id, ...opts.input };
-    users[user.id] = user;
+    const user = (await createUsers([{ username, password: hashedPassword }]))[0];
 
     return user;
   }),
