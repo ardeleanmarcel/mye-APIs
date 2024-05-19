@@ -1,4 +1,4 @@
-import { UserCreateType, UserSelectType } from '../../models/user.models';
+import { UserCreateType, UserType } from '../../models/user.models';
 import { sql } from '../client';
 
 export async function createUsers(users: UserCreateType[]) {
@@ -8,5 +8,5 @@ export async function createUsers(users: UserCreateType[]) {
       VALUES
         ( ${users[0].username} , ${users[0].password} )
       RETURNING *
-    `) as UserSelectType[];
+    `) as UserType[];
 }

@@ -1,10 +1,13 @@
 import { initTRPC } from '@trpc/server';
 import { z } from 'zod';
 import { hash } from 'bcrypt';
+import lodash from 'lodash';
 
 import { DEFAULT_SALT_ROUNDS } from './constants/auth.const';
 import { userCreateSchema } from './models/user.models';
 import { createUsers } from './db/sql/users.sql';
+
+const { pick } = lodash;
 
 export const t = initTRPC.create();
 
@@ -20,7 +23,9 @@ export const appRouter = t.router({
 
     const user = (await createUsers([{ username, password: hashedPassword }]))[0];
 
-    return user;
+    const data = pick(user, ['user_id', 'username']);
+
+    return data;
   }),
 });
 
