@@ -1,33 +1,9 @@
-import { initTRPC } from '@trpc/server';
-import { z } from 'zod';
-import { hash } from 'bcrypt';
-import lodash from 'lodash';
-
-import { DEFAULT_SALT_ROUNDS } from './constants/auth.const';
-import { userCreateSchema } from './models/user.models';
-import { createUsers } from './db/sql/users.sql';
-
-const { pick } = lodash;
-
-export const t = initTRPC.create();
+import { t } from '@src/trpc';
+import { users } from '@routers/users';
 
 export const appRouter = t.router({
-  getUserById: t.procedure.input(z.string()).query((opts) => {
-    return 'gigel';
-  }),
-
-  createUser: t.procedure.input(userCreateSchema).mutation(async (opts) => {
-    const { username, password } = opts.input;
-
-    const hashedPassword = await hash(password, DEFAULT_SALT_ROUNDS);
-
-    const user = (await createUsers([{ username, password: hashedPassword }]))[0];
-
-    const data = pick(user, ['user_id', 'username']);
-
-    return data;
-  }),
+  users,
 });
 
-// export type definition of API
+// Here we export the type definition of the API
 export type AppRouter = typeof appRouter;

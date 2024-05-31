@@ -20,7 +20,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@trpc/server": "^10.45.2",
+    "@trpc/server": "^11.0.0-rc.382",
     "bcrypt": "^5.1.1",
     "fastify": "^4.26.2",
     "lodash": "^4.17.21",

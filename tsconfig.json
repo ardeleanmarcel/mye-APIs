@@ -13,7 +13,11 @@
     "outDir": "typedefs/",
     "emitDeclarationOnly": true,
     "esModuleInterop": true,
-    "lib": ["es7", "dom"]
+    "lib": ["es7", "dom"],
+    "paths": {
+      "@src/*": ["./src/*"],
+      "@routers/*": ["./src/routers/*"]
+    }
   },
   "include": ["src/export.ts"]
 }
