@@ -8,11 +8,12 @@ import { createUsers } from '@sql/users.sql';
 
 const { pick } = lodash;
 
-export const users = t.router({
-  getUserById: t.procedure.query((opts) => {
+export const usersRouter = t.router({
+  // TODO (Valle) -> make this accept an array?
+  get: t.procedure.query((opts) => {
     return 'gigel';
   }),
-  createUser: t.procedure.input(userCreateSchema).mutation(async (opts) => {
+  create: t.procedure.input(userCreateSchema).mutation(async (opts) => {
     const { username, password } = opts.input;
 
     const hashedPassword = await hash(password, DEFAULT_SALT_ROUNDS);

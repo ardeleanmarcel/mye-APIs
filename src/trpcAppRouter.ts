@@ -1,8 +1,9 @@
 import { t } from '@src/trpc';
-import { users } from '@routers/users';
+import { authRouter, usersRouter } from '@routers';
 
 export const appRouter = t.router({
-  users,
+  users: usersRouter,
+  auth: authRouter,
 });
 
 // Here we export the type definition of the API

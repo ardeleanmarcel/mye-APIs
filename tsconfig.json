@@ -16,6 +16,7 @@
     "lib": ["es7", "dom"],
     "paths": {
       "@src/*": ["./src/*"],
+      "@routers": ["./src/routers/index.ts"],
       "@routers/*": ["./src/routers/*"],
       "@sql/*": ["./src/db/sql/*"],
       "@constants/*": ["./src/constants/*"],
