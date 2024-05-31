@@ -16,7 +16,10 @@
     "lib": ["es7", "dom"],
     "paths": {
       "@src/*": ["./src/*"],
-      "@routers/*": ["./src/routers/*"]
+      "@routers/*": ["./src/routers/*"],
+      "@sql/*": ["./src/db/sql/*"],
+      "@constants/*": ["./src/constants/*"],
+      "@models/*": ["./src/models/*"]
     }
   },
   "include": ["src/export.ts"]
