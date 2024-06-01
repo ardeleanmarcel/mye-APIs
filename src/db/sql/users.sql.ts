@@ -1,5 +1,6 @@
 import { UserCreateType, UserType } from '../../models/user.models';
-import { knexClient, sql } from '../client';
+import { sql } from '../client';
+import { sqlClient } from '@src/adapters/sqlClient';
 
 // import { FILTER_TYPE, Filter } from '../utils';
 
@@ -21,7 +22,7 @@ export async function createUsers(users: UserCreateType[]) {
 // TODO (Valle) -> add where clause composition
 // TODO (Valle) -> replace knex client "direct usage" with an adapter pattern layer
 export async function selectUsers() {
-  const res = await knexClient.raw(`SELECT * from users`);
+  const res = await sqlClient.query<UserType>('SELECT * from users');
 
-  return res.rows as UserType[];
+  return res;
 }
