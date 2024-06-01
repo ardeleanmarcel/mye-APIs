@@ -21,8 +21,8 @@ export async function createUsers(users: UserCreateType[]) {
 // TODO (Valle) -> add seed script for root admin
 // TODO (Valle) -> add where clause composition
 // TODO (Valle) -> replace knex client "direct usage" with an adapter pattern layer
-export async function selectUsers() {
-  const res = await sqlClient.query<UserType>('SELECT * from users');
+export async function selectUsers(username: string) {
+  const res = await sqlClient.queryWithParams<UserType>(`SELECT * FROM users WHERE username = ?`, [username]);
 
   return res;
 }
