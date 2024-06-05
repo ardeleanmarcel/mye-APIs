@@ -8,9 +8,9 @@ import { composeWhereClause } from './utils/sql.utils';
 export async function createUsers(users: UserCreateType[]) {
   return (await sql`
       INSERT INTO users
-        (username, password)
+        (username, password, email)
       VALUES
-        ( ${users[0].username} , ${users[0].password} )
+        ( ${users[0].username} , ${users[0].password} , ${users[0].email})
       RETURNING *
     `) as UserType[];
 }
@@ -24,7 +24,7 @@ export async function selectUsers(filters: Filter<AllowedUserFilters>[]) {
 
   const query = `SELECT * FROM users ${whereClauses}`;
 
-  const res = await sqlClient.queryWithParams<UserType>(`SELECT * FROM users ${whereClauses}`, bindings);
+  const res = await sqlClient.queryWithParams<UserType>(query, bindings);
 
   return res;
 }
