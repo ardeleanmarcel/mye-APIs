@@ -8,15 +8,18 @@ import { createUsers, selectUsers } from '@sql/users.sql';
 
 import { createInputSchema } from './utils/router.utils';
 
+import { Filter } from '@src/db/db.utils';
+
 const { pick } = lodash;
 
-const getUsersInputSchema = createInputSchema({ username: 'string' });
+const USER_FILTERS = { username: 'string' } as const;
+type UserFilterNames = keyof typeof USER_FILTERS;
+
+const getUsersInputSchema = createInputSchema(USER_FILTERS);
 
 export const usersRouter = t.router({
   get: t.procedure.input(getUsersInputSchema).query(async (opts) => {
-    console.log('opts.input', opts.input);
-
-    const r = await selectUsers(opts.input);
+    const r = await selectUsers(opts.input as Filter<UserFilterNames>[]);
     return r;
   }),
 

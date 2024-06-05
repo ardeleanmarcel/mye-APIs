@@ -17,11 +17,12 @@ export async function createUsers(users: UserCreateType[]) {
 
 // TODO (Valle) -> add "created_at" column to users table
 // TODO (Valle) -> add seed script for root admin
-export async function selectUsers(filters: Filter[]) {
+
+type AllowedUserFilters = 'username';
+export async function selectUsers(filters: Filter<AllowedUserFilters>[]) {
   const { whereClauses, bindings } = composeWhereClause(filters);
 
   const query = `SELECT * FROM users ${whereClauses}`;
-  console.log('query', query);
 
   const res = await sqlClient.queryWithParams<UserType>(`SELECT * FROM users ${whereClauses}`, bindings);
 
