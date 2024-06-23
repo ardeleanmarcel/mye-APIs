@@ -1,9 +1,13 @@
 import { z } from 'zod';
 import { compare } from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import lodash from 'lodash';
 
 import { t } from '@src/trpc';
 import { selectUsers } from '@src/db/sql/users.sql';
 import { HttpError, HTTP_ERR } from '@src/errors';
+
+const { pick } = lodash;
 
 export const signInSchema = z.object({
   username: z.string().min(3).max(20),
@@ -19,10 +23,16 @@ export const authRouter = t.router({
     if (!user) throw new HttpError(HTTP_ERR.e400.BadCredentials);
 
     const isAllowed = await compare(password, user.password);
-    // TODO (Valle) -> create and return token
 
     if (!isAllowed) throw new HttpError(HTTP_ERR.e400.BadCredentials);
 
-    return isAllowed;
+    const payload = pick(user, ['user_id', 'username', 'email']);
+    const secret = process.env.AUTH_JWT_SECRET;
+    if (!secret) throw new Error('Missing AUTH_JWT_SECRET environment variable!');
+
+    // TODO (Valle) -> study algorithms and make an informed selection for the token. HS256 is the default
+    const token = jwt.sign(payload, secret, { algorithm: 'HS256' });
+
+    return { token };
   }),
 });
