@@ -7,6 +7,9 @@ class SqlClient {
     this.client = knexClient;
   }
 
+  // TODO (Valle) -> consolidate query and queryWithParams into single query function with optional second param
+  // TODO (Valle) -> client queries should be wrapped in try/catch and return an appropriate HttpError
+
   public async query<T>(text: string) {
     const res = await this.client.raw(text);
 
