@@ -5,9 +5,9 @@ interface HttpErrorArgs {
 }
 
 export class HttpError extends Error {
-  errorCode: number;
-  httpCode: number;
-  message: string;
+  public errorCode: number;
+  public httpCode: number;
+  public message: string;
 
   constructor({ errorCode, httpCode, message }: HttpErrorArgs) {
     super(message);
