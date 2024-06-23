@@ -6,6 +6,7 @@ import { composeWhereClause } from './utils/sql.utils';
 
 // TODO (Valle) -> enhance this to enable creation of multiple users
 export async function createUsers(users: UserCreateType[]) {
+  // TODO (Valle) -> use the sqlClient from the adapter instead of the 'sql' library?
   // TODO (Valle) -> wrap DB requests in a try-catch and throw an HttpError if the query fails
   return (await sql`
       INSERT INTO users
