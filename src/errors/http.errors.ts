@@ -13,4 +13,11 @@ export const HTTP_ERR = {
       message: 'Missing required authorization.',
     },
   },
+  e500: {
+    Unavailable: {
+      errorCode: 500001,
+      httpCode: 500,
+      message: 'A service required is currently unavailable.',
+    },
+  },
 } as const;

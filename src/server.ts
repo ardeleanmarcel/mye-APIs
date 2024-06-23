@@ -1,7 +1,10 @@
 import { fastifyTRPCPlugin, FastifyTRPCPluginOptions } from '@trpc/server/adapters/fastify';
 import fastify from 'fastify';
+
 import { createContext } from './trpcFastifyContext';
 import { appRouter, type AppRouter } from './trpcAppRouter';
+
+// TODO (Valle) -> register and export env vars here
 
 const server = fastify({
   maxParamLength: 5000,
