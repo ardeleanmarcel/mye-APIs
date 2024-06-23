@@ -1,7 +1,7 @@
 import { hash } from 'bcrypt';
 import lodash from 'lodash';
 
-import { t } from '@src/trpc';
+import { protectedProcedure, t } from '@src/trpc';
 import { DEFAULT_SALT_ROUNDS } from '@constants/auth.const';
 import { userCreateSchema } from '@models/user.models';
 import { createUsers, selectUsers } from '@sql/users.sql';
@@ -18,7 +18,8 @@ type UserFilterNames = keyof typeof USER_FILTERS;
 const getUsersInputSchema = createInputSchema(USER_FILTERS);
 
 export const usersRouter = t.router({
-  get: t.procedure.input(getUsersInputSchema).query(async (opts) => {
+  // TODO (Valle) -> this route should not be accessible to "anyone"
+  get: protectedProcedure.input(getUsersInputSchema).query(async (opts) => {
     const r = await selectUsers(opts.input as Filter<UserFilterNames>[]);
     return r;
   }),
