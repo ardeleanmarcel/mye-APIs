@@ -3,7 +3,6 @@ import { sqlClient } from '@src/adapters/sqlClient';
 import { Filter } from '../db.utils';
 import { composeWhereClause } from './utils/sql.utils';
 
-// TODO (Valle) -> enhance this to enable creation of multiple users
 export async function createUsers(users: UserCreateType[]) {
   // TODO (Valle) -> wrap DB requests in a try-catch and throw an HttpError if the query fails
   const queryValues = new Array(users.length)
@@ -19,6 +18,7 @@ export async function createUsers(users: UserCreateType[]) {
       RETURNING
         user_id,
         username,
+        password,
         email
   `;
 
@@ -27,7 +27,7 @@ export async function createUsers(users: UserCreateType[]) {
     return [...bindings, username, password, email];
   }, []);
 
-  return await sqlClient.queryWithParams<Omit<UserType, 'password'>>(query, bindings);
+  return await sqlClient.queryWithParams<UserType>(query, bindings);
 }
 
 // TODO (Valle) -> add "created_at" column to users table
