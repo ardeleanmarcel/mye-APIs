@@ -1,6 +1,12 @@
 import 'dotenv/config';
 import knex from 'knex';
 
+// because pg returns BIGINT as strings by default
+import pg from 'pg';
+pg.types.setTypeParser(20, function (val) {
+  return parseInt(val, 10);
+});
+
 export const knexClient = knex({
   client: 'pg',
   connection: {
