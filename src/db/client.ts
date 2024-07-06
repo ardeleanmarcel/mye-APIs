@@ -21,5 +21,6 @@ export const knexClient = knex({
     password: process.env.DB_PASS,
   },
   // TODO (Valle) -> should config search path based on environment
+  // TODO (Valle) -> setting the search path like this might be an improvement for "MYE databse"
   searchPath: ['development', 'public'],
 });
