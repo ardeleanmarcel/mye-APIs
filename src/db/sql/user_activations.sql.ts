@@ -1,8 +1,6 @@
 import { randomUUID } from 'crypto';
 import { sqlClient } from '@src/adapters/sqlClient';
-import { UserActivationType } from '../../models/user_activation.models';
-
-type UserActivationDbData = Pick<UserActivationType, 'user_id' | 'activation_code' | 'is_used'> & { expires_at: Date };
+import { UserActivationDbData } from '../../models/user_activation.models';
 
 export function createUserActivations(userIds: number[]) {
   const values = new Array(userIds.length)
@@ -21,4 +19,24 @@ export function createUserActivations(userIds: number[]) {
   `;
 
   return sqlClient.queryWithParams<UserActivationDbData>(query, bindings);
+}
+
+export function selectUserActivations(activationCodes: string[]) {
+  const query = `
+    SELECT * FROM user_activations ua
+    WHERE ua.activation_code IN ( ${activationCodes.map(() => '?').join(',  ')} )
+  `;
+
+  return sqlClient.queryWithParams<UserActivationDbData>(query, activationCodes);
+}
+
+export function updateUserActivations(activationCodes: string[]) {
+  const query = `
+  UPDATE user_activations
+  SET is_used = true
+  WHERE user_activations.activation_code IN ( ${activationCodes.map(() => '?').join(',  ')} )
+  RETURNING *
+  `;
+
+  return sqlClient.queryWithParams<UserActivationDbData>(query, activationCodes);
 }

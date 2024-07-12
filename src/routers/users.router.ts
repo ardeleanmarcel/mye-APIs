@@ -1,3 +1,4 @@
+import { z } from 'zod';
 import { hash } from 'bcrypt';
 import lodash from 'lodash';
 
@@ -5,7 +6,7 @@ import { protectedProcedure, t } from '@src/trpc';
 import { DEFAULT_SALT_ROUNDS } from '@constants/auth.const';
 import { userCreateSchema } from '@models/user.models';
 import { createUsers, selectUsers } from '@sql/users.sql';
-import { createUserActivations } from '@sql/user_activations.sql';
+import { createUserActivations, selectUserActivations, updateUserActivations } from '@sql/user_activations.sql';
 
 import { createInputSchema } from './utils/router.utils';
 
@@ -26,7 +27,6 @@ export const usersRouter = t.router({
     return r;
   }),
 
-  // TODO (Valle) -> enhance this to enable creation of multiple users?
   create: t.procedure.input(userCreateSchema).mutation(async (opts) => {
     const { username, password, email } = opts.input;
     const {
@@ -51,5 +51,18 @@ export const usersRouter = t.router({
 
     const data = pick(user, ['user_id', 'username', 'email']);
     return data;
+  }),
+
+  activate: t.procedure.input(z.string().uuid()).query(async (opts) => {
+    const uuid = opts.input;
+
+    const userActivation = (await selectUserActivations([uuid]))[0];
+    // TODO (Valle) -> if activation is not found, return 404
+    // TODO (Valle) -> if activation is expired, return 400
+    // TODO (Valle) -> if activation is used, return 400
+
+    const updatedActivation = (await updateUserActivations([userActivation.activation_code]))[0];
+
+    console.log('updatedActivation', updatedActivation);
   }),
 });
