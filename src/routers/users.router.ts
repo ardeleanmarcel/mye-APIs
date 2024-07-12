@@ -5,11 +5,11 @@ import { protectedProcedure, t } from '@src/trpc';
 import { DEFAULT_SALT_ROUNDS } from '@constants/auth.const';
 import { userCreateSchema } from '@models/user.models';
 import { createUsers, selectUsers } from '@sql/users.sql';
+import { createUserActivations } from '@sql/user_activations.sql';
 
 import { createInputSchema } from './utils/router.utils';
 
 import { Filter } from '@src/db/db.utils';
-import { HTTP_ERR, HttpError } from '@src/errors';
 import { notificationService, EMAIL_TYPE } from '@src/adapters/service.notification';
 
 const { pick } = lodash;
@@ -26,6 +26,7 @@ export const usersRouter = t.router({
     return r;
   }),
 
+  // TODO (Valle) -> enhance this to enable creation of multiple users?
   create: t.procedure.input(userCreateSchema).mutation(async (opts) => {
     const { username, password, email } = opts.input;
     const {
@@ -37,12 +38,16 @@ export const usersRouter = t.router({
 
     const hashedPassword = await hash(password, DEFAULT_SALT_ROUNDS);
     const user = (await createUsers([{ username, password: hashedPassword, email }]))[0];
-    await notificationService.sendEmail({
-      id: EMAIL_TYPE.ConfirmNewUserEmail.id,
-      email,
-      userId: user.user_id,
-      username,
-    });
+
+    await createUserActivations([user.user_id]);
+
+    // TODO (Valle) -> send user activation link in email
+    // await notificationService.sendEmail({
+    //   id: EMAIL_TYPE.ConfirmNewUserEmail.id,
+    //   email,
+    //   userId: user.user_id,
+    //   username,
+    // });
 
     const data = pick(user, ['user_id', 'username', 'email']);
     return data;
