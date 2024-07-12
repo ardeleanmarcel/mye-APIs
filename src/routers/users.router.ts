@@ -12,6 +12,7 @@ import { createInputSchema } from './utils/router.utils';
 
 import { Filter } from '@src/db/db.utils';
 import { notificationService, EMAIL_TYPE } from '@src/adapters/service.notification';
+import { HTTP_ERR, HttpError } from '@src/errors';
 
 const { pick } = lodash;
 
@@ -57,12 +58,21 @@ export const usersRouter = t.router({
     const uuid = opts.input;
 
     const userActivation = (await selectUserActivations([uuid]))[0];
-    // TODO (Valle) -> if activation is not found, return 404
-    // TODO (Valle) -> if activation is expired, return 400
-    // TODO (Valle) -> if activation is used, return 400
 
-    const updatedActivation = (await updateUserActivations([userActivation.activation_code]))[0];
+    if (!userActivation) {
+      throw new HttpError(HTTP_ERR.e404.NotFound('Activation code', uuid));
+    }
 
-    console.log('updatedActivation', updatedActivation);
+    if (userActivation.is_used) {
+      throw new HttpError(HTTP_ERR.e400.ResourceConsumed('Activation code', uuid));
+    }
+
+    if (userActivation.expires_at < new Date()) {
+      throw new HttpError(HTTP_ERR.e400.ResourceExpired('Activation code', uuid));
+    }
+
+    await updateUserActivations([userActivation.activation_code]);
+
+    return { success: true };
   }),
 });

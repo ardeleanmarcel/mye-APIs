@@ -32,10 +32,10 @@ export function selectUserActivations(activationCodes: string[]) {
 
 export function updateUserActivations(activationCodes: string[]) {
   const query = `
-  UPDATE user_activations
-  SET is_used = true
-  WHERE user_activations.activation_code IN ( ${activationCodes.map(() => '?').join(',  ')} )
-  RETURNING *
+    UPDATE user_activations
+    SET is_used = true
+    WHERE user_activations.activation_code IN ( ${activationCodes.map(() => '?').join(',  ')} )
+    RETURNING *
   `;
 
   return sqlClient.queryWithParams<UserActivationDbData>(query, activationCodes);

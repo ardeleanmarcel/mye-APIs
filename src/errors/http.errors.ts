@@ -5,6 +5,16 @@ export const HTTP_ERR = {
       httpCode: 400,
       message: 'Invalid credentials.',
     },
+    ResourceConsumed: (name: string, value: string) => ({
+      errorCode: 400002,
+      httpCode: 400,
+      message: `${name} with value ${value} has been used.`,
+    }),
+    ResourceExpired: (name: string, value: string) => ({
+      errorCode: 400003,
+      httpCode: 400,
+      message: `${name} with value ${value} has expired.`,
+    }),
   },
   e401: {
     Unauthorized: {
@@ -12,6 +22,13 @@ export const HTTP_ERR = {
       httpCode: 401,
       message: 'Missing required authorization.',
     },
+  },
+  e404: {
+    NotFound: (name: string, value: string) => ({
+      errorCode: 404001,
+      httpCode: 404,
+      message: `${name} with value ${value} not found.`,
+    }),
   },
   e500: {
     Unavailable: {
