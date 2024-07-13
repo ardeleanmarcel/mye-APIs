@@ -6,6 +6,7 @@ import lodash from 'lodash';
 import { t } from '@src/trpc';
 import { selectUsers } from '@src/db/sql/users.sql';
 import { HttpError, HTTP_ERR } from '@src/errors';
+import { FILTER_TYPE } from '@src/db/db.utils';
 
 const { pick } = lodash;
 
@@ -18,7 +19,12 @@ export const authRouter = t.router({
   signIn: t.procedure.input(signInSchema).mutation(async (opts) => {
     const { username, password } = opts.input;
 
-    const user = (await selectUsers([{ name: 'username', type: 'IN', value: [username] }]))[0];
+    const user = (
+      await selectUsers([
+        { name: 'username', type: FILTER_TYPE.In, value: [username] },
+        { name: 'user_status_id', type: FILTER_TYPE.Is, value: 10 },
+      ])
+    )[0];
 
     if (!user) throw new HttpError(HTTP_ERR.e400.BadCredentials);
 
