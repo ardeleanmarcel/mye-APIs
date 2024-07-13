@@ -1,5 +1,6 @@
 import { fastifyTRPCPlugin, FastifyTRPCPluginOptions } from '@trpc/server/adapters/fastify';
 import fastify from 'fastify';
+import cors from '@fastify/cors';
 
 import { createContext } from './trpcFastifyContext';
 import { appRouter, type AppRouter } from './trpcAppRouter';
@@ -25,6 +26,8 @@ server.register(fastifyTRPCPlugin, {
 (async () => {
   try {
     console.log('starting server on port 3000');
+    await server.register(cors, { origin: 'http://localhost:5173' });
+
     await server.listen({ port: 3000 });
   } catch (err) {
     server.log.error(err);

@@ -1,108 +1,75 @@
-export declare const t: {
-    _config: import("@trpc/server").RootConfig<{
-        ctx: object;
-        meta: object;
-        errorShape: import("@trpc/server").DefaultErrorShape;
-        transformer: import("@trpc/server").DefaultDataTransformer;
-    }>;
-    procedure: import("@trpc/server").ProcedureBuilder<{
-        _config: import("@trpc/server").RootConfig<{
-            ctx: object;
-            meta: object;
-            errorShape: import("@trpc/server").DefaultErrorShape;
-            transformer: import("@trpc/server").DefaultDataTransformer;
-        }>;
-        _ctx_out: object;
-        _input_in: typeof import("@trpc/server").unsetMarker;
-        _input_out: typeof import("@trpc/server").unsetMarker;
-        _output_in: typeof import("@trpc/server").unsetMarker;
-        _output_out: typeof import("@trpc/server").unsetMarker;
-        _meta: object;
-    }>;
-    middleware: <TNewParams extends import("@trpc/server").ProcedureParams<import("@trpc/server").AnyRootConfig, unknown, unknown, unknown, unknown, unknown, unknown>>(fn: import("@trpc/server").MiddlewareFunction<{
-        _config: import("@trpc/server").RootConfig<{
-            ctx: object;
-            meta: object;
-            errorShape: import("@trpc/server").DefaultErrorShape;
-            transformer: import("@trpc/server").DefaultDataTransformer;
-        }>;
-        _ctx_out: {};
-        _input_out: typeof import("@trpc/server").unsetMarker;
-        _input_in: unknown;
-        _output_in: unknown;
-        _output_out: unknown;
-        _meta: object;
-    }, TNewParams>) => import("@trpc/server").MiddlewareBuilder<{
-        _config: import("@trpc/server").RootConfig<{
-            ctx: object;
-            meta: object;
-            errorShape: import("@trpc/server").DefaultErrorShape;
-            transformer: import("@trpc/server").DefaultDataTransformer;
-        }>;
-        _ctx_out: {};
-        _input_out: typeof import("@trpc/server").unsetMarker;
-        _input_in: unknown;
-        _output_in: unknown;
-        _output_out: unknown;
-        _meta: object;
-    }, TNewParams>;
-    router: <TProcRouterRecord extends import("@trpc/server").ProcedureRouterRecord>(procedures: TProcRouterRecord) => import("@trpc/server").CreateRouterInner<import("@trpc/server").RootConfig<{
-        ctx: object;
-        meta: object;
-        errorShape: import("@trpc/server").DefaultErrorShape;
-        transformer: import("@trpc/server").DefaultDataTransformer;
-    }>, TProcRouterRecord>;
-    mergeRouters: typeof import("@trpc/server").mergeRouters;
-    createCallerFactory: <TRouter extends import("@trpc/server").Router<import("@trpc/server").AnyRouterDef<import("@trpc/server").RootConfig<{
-        ctx: object;
-        meta: object;
-        errorShape: import("@trpc/server").DefaultErrorShape;
-        transformer: import("@trpc/server").DefaultDataTransformer;
-    }>, any>>>(router: TRouter) => import("@trpc/server").RouterCaller<TRouter["_def"]>;
-};
-export declare const appRouter: import("@trpc/server").CreateRouterInner<import("@trpc/server").RootConfig<{
-    ctx: object;
+/// <reference types="node" />
+export declare const appRouter: import("@trpc/server/dist/unstable-core-do-not-import").BuiltRouter<{
+    ctx: {
+        req: import("fastify").FastifyRequest<import("fastify").RouteGenericInterface, import("fastify").RawServerDefault, import("http").IncomingMessage, import("fastify").FastifySchema, import("fastify").FastifyTypeProviderDefault, unknown, import("fastify").FastifyBaseLogger, import("fastify/types/type-provider").ResolveFastifyRequestType<import("fastify").FastifyTypeProviderDefault, import("fastify").FastifySchema, import("fastify").RouteGenericInterface>>;
+        res: import("fastify").FastifyReply<import("fastify").RawServerDefault, import("http").IncomingMessage, import("http").ServerResponse<import("http").IncomingMessage>, import("fastify").RouteGenericInterface, unknown, import("fastify").FastifySchema, import("fastify").FastifyTypeProviderDefault, unknown>;
+    };
     meta: object;
-    errorShape: import("@trpc/server").DefaultErrorShape;
-    transformer: import("@trpc/server").DefaultDataTransformer;
-}>, {
-    getUserById: import("@trpc/server").BuildProcedure<"query", {
-        _config: import("@trpc/server").RootConfig<{
-            ctx: object;
-            meta: object;
-            errorShape: import("@trpc/server").DefaultErrorShape;
-            transformer: import("@trpc/server").DefaultDataTransformer;
-        }>;
-        _meta: object;
-        _ctx_out: object;
-        _input_in: string;
-        _input_out: string;
-        _output_in: typeof import("@trpc/server").unsetMarker;
-        _output_out: typeof import("@trpc/server").unsetMarker;
-    }, string>;
-    createUser: import("@trpc/server").BuildProcedure<"mutation", {
-        _config: import("@trpc/server").RootConfig<{
-            ctx: object;
-            meta: object;
-            errorShape: import("@trpc/server").DefaultErrorShape;
-            transformer: import("@trpc/server").DefaultDataTransformer;
-        }>;
-        _meta: object;
-        _ctx_out: object;
-        _input_in: {
-            username: string;
-            password: string;
+    errorShape: import("@trpc/server/dist/unstable-core-do-not-import").DefaultErrorShape;
+    transformer: false;
+}, import("@trpc/server/dist/unstable-core-do-not-import").DecorateCreateRouterOptions<{
+    users: import("@trpc/server/dist/unstable-core-do-not-import").BuiltRouter<{
+        ctx: {
+            req: import("fastify").FastifyRequest<import("fastify").RouteGenericInterface, import("fastify").RawServerDefault, import("http").IncomingMessage, import("fastify").FastifySchema, import("fastify").FastifyTypeProviderDefault, unknown, import("fastify").FastifyBaseLogger, import("fastify/types/type-provider").ResolveFastifyRequestType<import("fastify").FastifyTypeProviderDefault, import("fastify").FastifySchema, import("fastify").RouteGenericInterface>>;
+            res: import("fastify").FastifyReply<import("fastify").RawServerDefault, import("http").IncomingMessage, import("http").ServerResponse<import("http").IncomingMessage>, import("fastify").RouteGenericInterface, unknown, import("fastify").FastifySchema, import("fastify").FastifyTypeProviderDefault, unknown>;
         };
-        _input_out: {
-            username: string;
-            password: string;
+        meta: object;
+        errorShape: import("@trpc/server/dist/unstable-core-do-not-import").DefaultErrorShape;
+        transformer: false;
+    }, {
+        get: import("@trpc/server").TRPCQueryProcedure<{
+            input: {
+                type: "IN";
+                name: string;
+                value: string | number | string[] | number[];
+            }[];
+            output: {
+                username: string;
+                email: string;
+                user_id: number;
+                password: string;
+                user_status_id: number;
+            }[];
+        }>;
+        create: import("@trpc/server").TRPCMutationProcedure<{
+            input: {
+                username: string;
+                email: string;
+                password: string;
+            };
+            output: Pick<{
+                username: string;
+                email: string;
+                user_id: number;
+                password: string;
+                user_status_id: number;
+            }, "username" | "email" | "user_id">;
+        }>;
+        activate: import("@trpc/server").TRPCQueryProcedure<{
+            input: string;
+            output: {
+                success: boolean;
+            };
+        }>;
+    }>;
+    auth: import("@trpc/server/dist/unstable-core-do-not-import").BuiltRouter<{
+        ctx: {
+            req: import("fastify").FastifyRequest<import("fastify").RouteGenericInterface, import("fastify").RawServerDefault, import("http").IncomingMessage, import("fastify").FastifySchema, import("fastify").FastifyTypeProviderDefault, unknown, import("fastify").FastifyBaseLogger, import("fastify/types/type-provider").ResolveFastifyRequestType<import("fastify").FastifyTypeProviderDefault, import("fastify").FastifySchema, import("fastify").RouteGenericInterface>>;
+            res: import("fastify").FastifyReply<import("fastify").RawServerDefault, import("http").IncomingMessage, import("http").ServerResponse<import("http").IncomingMessage>, import("fastify").RouteGenericInterface, unknown, import("fastify").FastifySchema, import("fastify").FastifyTypeProviderDefault, unknown>;
         };
-        _output_in: typeof import("@trpc/server").unsetMarker;
-        _output_out: typeof import("@trpc/server").unsetMarker;
-    }, Pick<{
-        username: string;
-        user_id: string;
-        password: string;
-    }, "username" | "user_id">>;
-}>;
+        meta: object;
+        errorShape: import("@trpc/server/dist/unstable-core-do-not-import").DefaultErrorShape;
+        transformer: false;
+    }, {
+        signIn: import("@trpc/server").TRPCMutationProcedure<{
+            input: {
+                username: string;
+                password: string;
+            };
+            output: {
+                token: string;
+            };
+        }>;
+    }>;
+}>>;
 export type AppRouter = typeof appRouter;
