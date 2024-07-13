@@ -40,15 +40,15 @@ export const usersRouter = t.router({
     const hashedPassword = await hash(password, DEFAULT_SALT_ROUNDS);
     const user = (await createUsers([{ username, password: hashedPassword, email }]))[0];
 
-    await createUserActivations([user.user_id]);
+    const activation = (await createUserActivations([user.user_id]))[0];
 
-    // TODO (Valle) -> send user activation link in email
-    // await notificationService.sendEmail({
-    //   id: EMAIL_TYPE.ConfirmNewUserEmail.id,
-    //   email,
-    //   userId: user.user_id,
-    //   username,
-    // });
+    const confirmationUrl = `${process.env.MYE_WEB_UI_ROOT_URL}/verify-email?activationCode=${activation.activation_code}`;
+
+    await notificationService.sendAccountConfirmationEmail({
+      email,
+      confirmationUrl,
+      username,
+    });
 
     const data = pick(user, ['user_id', 'username', 'email']);
     return data;
