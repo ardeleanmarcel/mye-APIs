@@ -33,7 +33,7 @@ export async function createUsers(users: UserCreateType[]) {
 // TODO (Valle) -> add "created_at" column to users table
 // TODO (Valle) -> add seed script for root admin
 
-type AllowedUserFilters = 'username';
+type AllowedUserFilters = 'username' | 'user_status_id';
 export async function selectUsers(filters: Filter<AllowedUserFilters>[]) {
   const { whereClauses, bindings } = composeWhereClause(filters);
 
