@@ -1,3 +1,4 @@
+import { z } from 'zod';
 import { hash } from 'bcrypt';
 import lodash from 'lodash';
 
@@ -5,12 +6,13 @@ import { protectedProcedure, t } from '@src/trpc';
 import { DEFAULT_SALT_ROUNDS } from '@constants/auth.const';
 import { userCreateSchema } from '@models/user.models';
 import { createUsers, selectUsers } from '@sql/users.sql';
+import { createUserActivations, selectUserActivations, updateUserActivations } from '@sql/user_activations.sql';
 
 import { createInputSchema } from './utils/router.utils';
 
 import { Filter } from '@src/db/db.utils';
-import { HTTP_ERR, HttpError } from '@src/errors';
 import { notificationService, EMAIL_TYPE } from '@src/adapters/service.notification';
+import { HTTP_ERR, HttpError } from '@src/errors';
 
 const { pick } = lodash;
 
@@ -37,14 +39,40 @@ export const usersRouter = t.router({
 
     const hashedPassword = await hash(password, DEFAULT_SALT_ROUNDS);
     const user = (await createUsers([{ username, password: hashedPassword, email }]))[0];
-    await notificationService.sendEmail({
-      id: EMAIL_TYPE.ConfirmNewUserEmail.id,
+
+    const activation = (await createUserActivations([user.user_id]))[0];
+
+    const confirmationUrl = `${process.env.MYE_WEB_UI_ROOT_URL}/verify-email?activationCode=${activation.activation_code}`;
+
+    await notificationService.sendAccountConfirmationEmail({
       email,
-      userId: user.user_id,
+      confirmationUrl,
       username,
     });
 
     const data = pick(user, ['user_id', 'username', 'email']);
     return data;
+  }),
+
+  activate: t.procedure.input(z.string().uuid()).query(async (opts) => {
+    const uuid = opts.input;
+
+    const userActivation = (await selectUserActivations([uuid]))[0];
+
+    if (!userActivation) {
+      throw new HttpError(HTTP_ERR.e404.NotFound('Activation code', uuid));
+    }
+
+    if (userActivation.is_used) {
+      throw new HttpError(HTTP_ERR.e400.ResourceConsumed('Activation code', uuid));
+    }
+
+    if (userActivation.expires_at < new Date()) {
+      throw new HttpError(HTTP_ERR.e400.ResourceExpired('Activation code', uuid));
+    }
+
+    await updateUserActivations([userActivation.activation_code]);
+
+    return { success: true };
   }),
 });

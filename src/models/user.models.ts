@@ -1,10 +1,10 @@
 import { z } from 'zod';
 
 export const userSchema = z.object({
-  user_id: z.string(),
+  user_id: z.number().int().positive(),
   username: z.string().min(3).max(20),
   password: z.string().min(8).max(20),
-  email: z.string(), // TODO (Valle) -> add email regex
+  email: z.string().email(),
 });
 
 export const userCreateSchema = userSchema

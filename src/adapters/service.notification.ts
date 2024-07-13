@@ -17,12 +17,6 @@ function getSendgridTemplateId(id: keyof typeof EMAIL_TYPE) {
   return SENDGRID_TEMPLATE[id];
 }
 
-// TODO (Valle) -> improve this type
-interface EmailTypeConfig {
-  id: keyof typeof EMAIL_TYPE;
-  templateArgs?: readonly string[];
-}
-
 class NotificationService {
   private emailClient: sendGrid.MailService;
 
@@ -32,30 +26,26 @@ class NotificationService {
   }
 
   // TODO (Valle) -> cfg type should depend on the email to be sent...
-  public async sendEmail(cfg: EmailTypeConfig & { email: string; username: string; userId: string }) {
-    const msg = {
+  public async sendAccountConfirmationEmail(cfg: { email: string; username: string; confirmationUrl: string }) {
+    const sendgridConfig = {
       to: cfg.email,
+      // TODO (Valle) -> export all env variables from a single file that will throw if anything is missing
       from: process.env.NOTIFICATION_EMAIL_SOURCE ?? '',
       subject: 'Confirm MYE account',
-      text: 'Please click link to confirm email',
-      html: '<strong>Please click link to confirm email</strong>',
+      templateId: getSendgridTemplateId('ConfirmNewUserEmail'),
+      dynamicTemplateData: {
+        username: cfg.username,
+        confirmationUrl: cfg.confirmationUrl,
+      },
     };
 
-    await this.emailClient
-      .send({
-        ...msg,
-        templateId: getSendgridTemplateId(cfg.id),
-        dynamicTemplateData: {
-          username: cfg.username,
-          // TODO (Valle) -> update url
-          confirmationUrl: `https://www.google.com/user/${cfg.userId}`,
-        },
-      })
-      .catch((err) => {
-        // TODO (Valle) -> improve error logging
-        console.error(err);
-        throw new HttpError(HTTP_ERR.e500.Unavailable);
-      });
+    const res = await this.emailClient.send(sendgridConfig).catch((err) => {
+      // TODO (Valle) -> improve error logging
+      console.error(err);
+      throw new HttpError(HTTP_ERR.e500.Unavailable);
+    });
+
+    return res;
   }
 }
 

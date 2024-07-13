@@ -1,3 +1,4 @@
+// TODO (Valle) -> should this be typed to enforce using the errors object?
 interface HttpErrorArgs {
   errorCode: number;
   httpCode: number;

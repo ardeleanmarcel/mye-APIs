@@ -1,20 +1,33 @@
 import { UserCreateType, UserType } from '../../models/user.models';
-import { sql } from '../client';
 import { sqlClient } from '@src/adapters/sqlClient';
 import { Filter } from '../db.utils';
 import { composeWhereClause } from './utils/sql.utils';
 
-// TODO (Valle) -> enhance this to enable creation of multiple users
 export async function createUsers(users: UserCreateType[]) {
-  // TODO (Valle) -> use the sqlClient from the adapter instead of the 'sql' library?
   // TODO (Valle) -> wrap DB requests in a try-catch and throw an HttpError if the query fails
-  return (await sql`
+  const queryValues = new Array(users.length)
+    .fill(null)
+    .map(() => `( ?, ?, ?, 20 )`)
+    .join(',\n');
+
+  const query = `
       INSERT INTO users
-        (username, password, email)
+        (username, password, email, user_status_id)
       VALUES
-        ( ${users[0].username} , ${users[0].password} , ${users[0].email})
-      RETURNING *
-    `) as UserType[];
+        ${queryValues}
+      RETURNING
+        user_id,
+        username,
+        password,
+        email
+  `;
+
+  const bindings = users.reduce((bindings, user) => {
+    const { username, password, email } = user;
+    return [...bindings, username, password, email];
+  }, []);
+
+  return await sqlClient.queryWithParams<UserType>(query, bindings);
 }
 
 // TODO (Valle) -> add "created_at" column to users table
