@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "ES2020",
-    "module": "commonjs",
+    "module": "ESNext",
     "moduleResolution": "node",
     "allowImportingTsExtensions": true,
     "allowJs": true,
@@ -23,5 +23,5 @@
       "@models/*": ["./src/models/*"]
     }
   },
-  "include": ["src/export.ts"]
+  "include": ["src"]
 }

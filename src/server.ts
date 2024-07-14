@@ -3,7 +3,7 @@ import fastify from 'fastify';
 import cors from '@fastify/cors';
 
 import { createContext } from './trpcFastifyContext';
-import { appRouter, type AppRouter } from './trpcAppRouter';
+import { appRouter, AppRouter } from './trpcAppRouter';
 
 // TODO (Valle) -> register and export env vars here
 
