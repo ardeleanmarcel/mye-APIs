@@ -5,15 +5,15 @@ meta {
 }
 
 post {
-  url: http://localhost:3000/trpc/expenses.add
+  url: http://localhost:3000/trpc/expenses.create
   body: json
   auth: inherit
 }
 
 body:json {
-  {
+  [{
     "description": "lambo",
     "amount": 1234.12,
-    "dateExpendedAt": "2024-07-14"
-  }
+    "date_expended_at": "2024-07-14"
+  }]
 }
