@@ -11,7 +11,7 @@ import { createUserActivations, selectUserActivations, updateUserActivations } f
 import { createInputSchema } from './utils/router.utils';
 
 import { Filter } from '@src/db/db.utils';
-import { notificationService, EMAIL_TYPE } from '@src/adapters/service.notification';
+import { notificationService } from '@src/adapters/service.notification';
 import { HTTP_ERR, HttpError } from '@src/errors';
 
 const { pick } = lodash;
@@ -22,7 +22,7 @@ type UserFilterNames = keyof typeof USER_FILTERS;
 const getUsersInputSchema = createInputSchema(USER_FILTERS);
 
 export const usersRouter = t.router({
-  // TODO (Valle) -> this route should not be accessible to "anyone"
+  // TODO (Valle) -> this route should not be accessible to "anyone" (meaning admins only)
   get: protectedProcedure.input(getUsersInputSchema).query(async (opts) => {
     const r = await selectUsers(opts.input as Filter<UserFilterNames>[]);
     return r;
