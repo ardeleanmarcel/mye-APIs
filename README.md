@@ -8,6 +8,8 @@
 <br/>
 <br/>
 
+## Versioning & publishing
+
 # Code style guide
 
 ## Error handling
